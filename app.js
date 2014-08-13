@@ -2,7 +2,6 @@ angular.module('app', ["html5.sortable", "ngSanitize"])
 
 	.factory('almacenamientoLocal', function () {
 		var STORAGE_ID = 'misTareas';
-		// localStorage.clear();
 
 		return {
 			get: function (tipo) {
@@ -17,6 +16,7 @@ angular.module('app', ["html5.sortable", "ngSanitize"])
 	.controller('ctl', function ($window, $scope, almacenamientoLocal, filterFilter) {
 		$scope.modo              = "añadir";
 		$scope.indiceActual      = 0;
+		$scope.tipoActual        = "pendientes";
 		$scope.tareasActivas     = almacenamientoLocal.get("activas");
 		$scope.tareasPendientes  = almacenamientoLocal.get("pendientes");
 		$scope.tareasFinalizadas = almacenamientoLocal.get("finalizadas");
@@ -36,26 +36,41 @@ angular.module('app', ["html5.sortable", "ngSanitize"])
 			return duplicadasPendientes.length + duplicadasActivas.length + duplicadasFinalizadas.length;
 		};
 
-		$scope.borrarTarea = function ( tipo, indice ) {
-			if (tipo == "activas") {
-				$scope.tareasActivas.splice(indice,1);
-				almacenamientoLocal.put("activas", $scope.tareasActivas);
+		$scope.borrarTarea = function () {
+			switch ($scope.tipoActual) {
+				case "pendientes":
+					$scope.tareasPendientes.splice($scope.indiceActual, 1);
+					almacenamientoLocal.put("pendientes", $scope.tareasPendientes);
+					break;
+				case "activas":
+					$scope.tareasActivas.splice($scope.indiceActual, 1);
+					almacenamientoLocal.put("activas", $scope.tareasActivas);
+					break;
+				case "finalizadas":
+					$scope.tareasFinalizadas.splice($scope.indiceActual, 1);
+					almacenamientoLocal.put("finalizadas", $scope.tareasFinalizadas);
+					break;
 			};
-			if (tipo == "pendientes") {
-				$scope.tareasPendientes.splice(indice,1);
-				almacenamientoLocal.put("pendientes", $scope.tareasPendientes);
-			};
-			if (tipo == "finalizadas") {
-				$scope.tareasFinalizadas.splice(indice,1);
-				almacenamientoLocal.put("finalizadas", $scope.tareasFinalizadas);
-			};
+			$scope.tarea = "";
+			$scope.modo  = "añadir";
 		};
 
-		$scope.seleccionarTarea = function ( tipo, indice ) {
-			if (tipo == "pendientes") {
-				$scope.modo  = "editar";
-				$scope.indiceActual = indice;
-				$scope.tarea = $scope.tareasPendientes[indice].tarea;
+		$scope.seleccionarTarea = function (accion, tipo, indice ) {
+			$scope.modo         = accion;
+			$scope.indiceActual = indice;
+			$scope.tipoActual   = tipo;
+			switch (tipo) {
+				case "pendientes":
+					$scope.tarea = $scope.tareasPendientes[indice].tarea;
+					break;
+				case "activas":
+					$scope.tarea = $scope.tareasActivas[indice].tarea;
+					break;
+				case "finalizadas":
+					$scope.tarea = $scope.tareasFinalizadas[indice].tarea;
+					break;
+				default:
+					$scope.tarea = "";
 			};
 		};
 
@@ -72,6 +87,10 @@ angular.module('app', ["html5.sortable", "ngSanitize"])
 					$scope.tarea = "";
 					break;
 				case "editar":
+					$scope.tarea = "";
+					$scope.modo  = "añadir";
+					break;
+				case "borrar":
 					$scope.tarea = "";
 					$scope.modo  = "añadir";
 					break;

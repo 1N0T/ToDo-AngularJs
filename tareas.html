@@ -19,7 +19,7 @@
 			<div class="contenido">
 				<div class="ui form">
 					<div class="field" ng-class="{'error':tareaDuplicada(tarea) && tarea.length}">
-						<textarea placeholder="Describe la nueva tarea" ng-model="tarea"></textarea>
+						<textarea placeholder="Describe la nueva tarea" ng-model="tarea" ng-disabled="modo == 'borrar'"></textarea>
 					</div>
 					<div class="ui green button" ng-click="nuevaTarea(tarea)"  ng-if="modo=='añadir';" ng-class="{'disabled':!tarea.length || tareaDuplicada(tarea)}">
 						<i class="save icon"></i>
@@ -28,6 +28,10 @@
 					<div class="ui green button" ng-click="modificarTarea(tarea)"  ng-if="modo=='editar';" ng-class="{'disabled':!tarea.length || tareaDuplicada(tarea)}">
 						<i class="save icon"></i>
 						Guardar
+					</div>
+					<div class="ui green button" ng-click="borrarTarea()"  ng-if="modo=='borrar';">
+						<i class="trash icon"></i>
+						Borrar
 					</div>
 					<div class="ui red button" ng-click="cancelar()"  ng-class="{'disabled':!tarea.length}">
 						<i class="cancel basic icon"></i>
@@ -47,8 +51,8 @@
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'pendientes'" ng-model="tareasPendientes">
 						<div  class="ui red message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasPendientes" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
-								<i class="pencil icon" ng-click="seleccionarTarea('pendientes', $index)"></i>
-								<i class="close icon" ng-click="borrarTarea('pendientes', $index)"></i>
+								<i class="pencil icon" ng-click="seleccionarTarea('editar', 'pendientes', $index)"></i>
+								<i class="close icon" ng-click="seleccionarTarea('borrar', 'pendientes', $index)"></i>
 							</div>
 							<label ng-bind-html="item.tarea"></label>
 						</div>
@@ -71,7 +75,7 @@
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'activas'" ng-model="tareasActivas">
 						<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
-								<i class="close icon" ng-click="borrarTarea('activas', $index)"></i>
+								<i class="close icon" ng-click="seleccionarTarea('borrar', 'activas', $index)"></i>
 							</div>
 							<label ng-bind-html="item.tarea"></label>
 						</div>
@@ -94,7 +98,7 @@
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'finalizadas'" ng-model="tareasFinalizadas">
 						<div  class="ui green message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasFinalizadas" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
-								<i class="close icon" ng-click="borrarTarea('finalizadas', $index)"></i>
+								<i class="close icon" ng-click="seleccionarTarea('borrar', 'finalizadas', $index)"></i>
 							</div>
 							<label ng-bind-html="item.tarea"></label>
 						</div>
