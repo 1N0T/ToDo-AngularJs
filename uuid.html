@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<title>UUID</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+		<script type="text/javascript" src="./app.js"></script>
+		<link rel="stylesheet" href="http://cdn.jsdelivr.net/semantic-ui/0.19.0/css/semantic.min.css">
+		<link rel="stylesheet" href="./app.css">
+
+	</head>
+<body ng-app="app" ng-controller="ctl">
+	<div layout>
+		     
+		<div class="caja" ng-style="{ top: nuevoSuperior, left: nuevoIzquierda, right: nuevoDerecha }">
+			<div class="contenido">
+				<div class="ui form">
+					<pre>
+var fecha = new Date().getTime();
+var uuid  = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, 
+            function(c) {
+               var r = (fecha + Math.random()*16)%16 | 0;
+               return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+            });
+return uuid;																	
+					</pre>
+							
+					<div class="ui green button" ng-click="nuevoUUID()" >
+						<i class="new icon"></i>
+						nuevo UUID RFC4122
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="caja" ng-style="{ top: listaSuperior, bottom: listaInferior, left: listaIzquierda, right: listaDerecha }">
+			<div class="contenido">
+				<h2 class="ui header">
+					<i class="circular inverted teal ok circle icon"></i>
+					Lista UUIDs generados ({{listaUUIDs.length}})
+				</h2>
+				<div class="listaItems" ng-style="{ height: listaAltoLista }">
+					<div  class="ui red message uuid" ng-repeat="uuid in listaUUIDs">
+						{{uuid}}
+					</div>
+				</div>
+			</div>
+		</div >
+
+	</div>
+</body>
+</html>
