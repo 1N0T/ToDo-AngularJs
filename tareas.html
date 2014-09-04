@@ -49,7 +49,7 @@
 				</h2>
 				<div class="listaItems" ng-style="{ height: pendientesAltoLista }">
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'pendientes'" ng-model="tareasPendientes">
-						<div  class="ui red message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasPendientes" ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div  class="ui red message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasPendientes track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
 								<i class="pencil icon" ng-click="seleccionarTarea('editar', 'pendientes', $index)"></i>
 								<i class="close icon" ng-click="seleccionarTarea('borrar', 'pendientes', $index)"></i>
@@ -73,7 +73,7 @@
 				</h2>
 				<div class="listaItems" ng-style="{ height: activasAltoLista }">
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'activas'" ng-model="tareasActivas">
-						<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas" ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
 								<i class="close icon" ng-click="seleccionarTarea('borrar', 'activas', $index)"></i>
 							</div>
@@ -96,7 +96,7 @@
 				</h2>
 				<div class="listaItems" ng-style="{ height: finalizadasAltoLista }">
 					<div html-sortable="sortable_cross_option" ng-extra-sortable="'finalizadas'" ng-model="tareasFinalizadas">
-						<div  class="ui green message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasFinalizadas" ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div  class="ui green message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasFinalizadas track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
 							<div class="botonera">
 								<i class="close icon" ng-click="seleccionarTarea('borrar', 'finalizadas', $index)"></i>
 							</div>
