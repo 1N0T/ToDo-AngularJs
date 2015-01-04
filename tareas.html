@@ -5,7 +5,6 @@
 		<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
 
 		<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
-		<!-- <script>tinymce.init({selector:'textarea'});</script> -->
 		<script src="./langs/es.js"></scriptsrc></script>
 
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
@@ -18,13 +17,13 @@
 
 	</head>
 <body ng-app="app" ng-controller="ctl">
-	<div layout>
+	<div class="container">	
 		     
-		<div class="caja" ng-style="{ top: nuevasSuperior, bottom: nuevasInferior, left: nuevasIzquierda, right: nuevasDerecha }">
+		<div class="caja edicion">
 			<div class="contenido">
 				<div class="ui form">
 					<div class="field" ng-class="{'error':tareaDuplicada(tarea) && tarea.length}">
-						<textarea id="code" placeholder="Describe la nueva tarea" ui-tinymce ng-model="tarea" ng-disabled="modo == 'borrar'"></textarea>
+						<textarea id="code" placeholder="Describe la nueva tarea" ui-tinymce="opcionesTinymce" ng-model="tarea" ng-disabled="modo == 'borrar'"></textarea>
 					</div>
 					<div class="ui green button" ng-click="nuevaTarea(tarea)"  ng-if="modo=='añadir';" ng-class="{'disabled':!tarea.length || tareaDuplicada(tarea)}">
 						<i class="save icon"></i>
@@ -46,71 +45,66 @@
 			</div>
 		</div>
 
-		<div class="caja" ng-style="{ top: pendientesSuperior, bottom: pendientesInferior, left: pendientesIzquierda, right: pendientesDerecha }">
-			<div class="contenido">
-				<h2 class="ui header">
-					<i class="circular inverted red lock icon"></i>
-					Pendientes ({{tareasPendientes.length}})
-				</h2>
-				<div class="listaItems" ng-style="{ height: pendientesAltoLista }">
-					<div html-sortable="sortable_cross_option" ng-extra-sortable="'pendientes'" ng-model="tareasPendientes">
-						<div  class="ui red message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasPendientes track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
-							<div class="botonera">
-								<i class="pencil icon" ng-click="seleccionarTarea('editar', 'pendientes', $index)"></i>
-								<i class="close icon" ng-click="seleccionarTarea('borrar', 'pendientes', $index)"></i>
-							</div>
-							<label ng-bind-html="item.tarea"></label>
+		<div class="caja encurso">
+			<h2 class="ui header titulo">
+				<i class="circular inverted blue settings icon"></i>
+				En curso ({{tareasActivas.length}})
+			</h2>
+			<div class="listaItems" ng-style="{ height: activasAltoLista }">
+				<div class="item" html-sortable="sortable_cross_option" ng-extra-sortable="'activas'" ng-model="tareasActivas">
+					<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas track by $index"  ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div class="botonera">
+							<i class="close icon" ng-click="seleccionarTarea('borrar', 'activas', $index)"></i>
 						</div>
-
-						<div class="ui message listaVacia" ng-if="!tareasPendientes.length;">
-							No existen tareas en este estado.
-						</div>
+						<label ng-bind-html="item.tarea"></label>
 					</div>
-				</div>
-			</div>
-		</div >
 
-		<div class="caja" ng-style="{ top: activasSuperior, bottom: activasInferior, left: activasIzquierda, right: activasDerecha }">
-			<div class="contenido">
-				<h2 class="ui header">
-					<i class="circular inverted blue settings icon"></i>
-					En curso ({{tareasActivas.length}})
-				</h2>
-				<div class="listaItems" ng-style="{ height: activasAltoLista }">
-					<div html-sortable="sortable_cross_option" ng-extra-sortable="'activas'" ng-model="tareasActivas">
-						<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas track by $index"  ng-click="mostrarCompleto = !mostrarCompleto" >
-							<div class="botonera">
-								<i class="close icon" ng-click="seleccionarTarea('borrar', 'activas', $index)"></i>
-							</div>
-							<label ng-bind-html="item.tarea"></label>
-						</div>
-
-						<div class="ui message listaVacia" ng-if="!tareasActivas.length;">
-							No existen tareas en este estado.
-						</div>
+					<div class="ui message listaVacia" ng-if="!tareasActivas.length;">
+						No existen tareas en este estado.
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="caja" ng-style="{ top: finalizadasSuperior, bottom: finalizadasInferior, left: finalizadasIzquierda, right: finalizadasDerecha }">
-			<div class="contenido">
-				<h2 class="ui header">
-					<i class="circular inverted teal ok circle icon"></i>
-					Finalizadas ({{tareasFinalizadas.length}})
-				</h2>
-				<div class="listaItems" ng-style="{ height: finalizadasAltoLista }">
-					<div html-sortable="sortable_cross_option" ng-extra-sortable="'finalizadas'" ng-model="tareasFinalizadas">
-						<div  class="ui green message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasFinalizadas track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
-							<div class="botonera">
-								<i class="close icon" ng-click="seleccionarTarea('borrar', 'finalizadas', $index)"></i>
-							</div>
-							<label ng-bind-html="item.tarea"></label>
+		<div class="caja pendientes">
+			<h2 class="ui header titulo">
+				<i class="circular inverted red lock icon"></i>
+				Pendientes ({{tareasPendientes.length}})
+			</h2>
+			<div class="listaItems" ng-style="{ height: pendientesAltoLista }">
+				<div class="item" html-sortable="sortable_cross_option" ng-extra-sortable="'pendientes'" ng-model="tareasPendientes">
+					<div  class="ui red message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasPendientes track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div class="botonera">
+							<i class="pencil icon" ng-click="seleccionarTarea('editar', 'pendientes', $index)"></i>
+							<i class="close icon" ng-click="seleccionarTarea('borrar', 'pendientes', $index)"></i>
 						</div>
+						<label ng-bind-html="item.tarea"></label>
+					</div>
 
-						<div class="ui message listaVacia" ng-if="!tareasFinalizadas.length;">
-							No existen tareas en este estado.
+					<div class="ui message listaVacia" ng-if="!tareasPendientes.length;">
+						No existen tareas en este estado.
+					</div>
+				</div>
+			</div>
+		</div >
+
+
+		<div class="caja finalizadas">
+			<h2 class="ui header titulo">
+				<i class="circular inverted teal ok circle icon"></i>
+				Finalizadas ({{tareasFinalizadas.length}})
+			</h2>
+			<div class="listaItems" ng-style="{ height: finalizadasAltoLista }">
+				<div class="item" html-sortable="sortable_cross_option" ng-extra-sortable="'finalizadas'" ng-model="tareasFinalizadas">
+					<div  class="ui green message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasFinalizadas track by $index" ng-click="mostrarCompleto = !mostrarCompleto" >
+						<div class="botonera">
+							<i class="close icon" ng-click="seleccionarTarea('borrar', 'finalizadas', $index)"></i>
 						</div>
+						<label ng-bind-html="item.tarea"></label>
+					</div>
+
+					<div class="ui message listaVacia" ng-if="!tareasFinalizadas.length;">
+						No existen tareas en este estado.
 					</div>
 				</div>
 			</div>

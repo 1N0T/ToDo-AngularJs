@@ -21,6 +21,14 @@ angular.module('app', ["html5.sortable", "ngSanitize", "ui.tinymce"])
 		$scope.tareasPendientes  = almacenamientoLocal.get("pendientes");
 		$scope.tareasFinalizadas = almacenamientoLocal.get("finalizadas");
 
+		$scope.opcionesTinymce = {
+			plugins: "image, link, print",
+			toolbar: "bold italic underline |  aligncenter alignjustify  | bullist numlist outdent indent | link | print ",
+			menubar: true,
+			statusbar: false,
+			resize: true
+		};
+
 		$scope.nuevaTarea = function ( tarea ) {
 			if (tarea.trim().length > 0  && (!$scope.tareaDuplicada( tarea )))  {
 				$scope.tareasPendientes.push({"tarea": tarea});
@@ -161,46 +169,3 @@ angular.module('app', ["html5.sortable", "ngSanitize", "ui.tinymce"])
 
 	})
 
-	.directive('layout', function($window) {
-		return function(scope, elemento, atributos) {
-			scope.margen      = elemento.attr("margen")         || 8;
-		    scope.altoNueva   = elemento.attr("altonueva")      || 315;
-		    scope.altoActiva  = elemento.attr("altoactiva")     || 315;
-
-			scope.dimensionesVentana   = function() {
-				
-				scope.altoVentana          = $window.innerHeight;
-				scope.anchoVentana         = $window.innerWidth;
-				
-				scope.nuevasSuperior       = scope.margen + 'px';
-				scope.nuevasInferior       = (scope.altoVentana - scope.margen - scope.altoNueva) + 'px';
-				scope.nuevasDerecha        = scope.margen + 'px';
-				scope.nuevasIzquierda      = (((scope.anchoVentana - scope.margen * 3) / 2) + (scope.margen * 2)) + 'px';
-
-				scope.activasSuperior      = scope.margen + 'px';
-				scope.activasInferior      = (scope.altoVentana - scope.margen - scope.altoActiva) + 'px';
-				scope.activasDerecha       = (((scope.anchoVentana - scope.margen * 3) / 2) + (scope.margen * 2)) + 'px';
-				scope.activasIzquierda     = scope.margen + 'px';
-				scope.activasAltoLista     = (scope.altoActiva - (scope.margen * 2) - 88) + 'px';
-				
-				scope.pendientesSuperior   = (scope.altoNueva + (scope.margen * 2)) + 'px';
-				scope.pendientesInferior   = scope.margen + 'px';
-				scope.pendientesDerecha    = scope.margen + 'px';
-				scope.pendientesIzquierda  = (((scope.anchoVentana - scope.margen * 3) / 2) + (scope.margen * 2)) + 'px';
-				scope.pendientesAltoLista  = (scope.altoVentana - scope.altoNueva - (scope.margen * 3) - 88) + 'px';
-				
-				scope.finalizadasSuperior  = (scope.altoActiva + (scope.margen * 2)) + 'px';
-				scope.finalizadasInferior  = scope.margen + 'px';
-				scope.finalizadasDerecha   = (((scope.anchoVentana - scope.margen * 3) / 2) + (scope.margen * 2)) + 'px';
-				scope.finalizadasIzquierda = scope.margen + 'px';
-				scope.finalizadasAltoLista = (scope.altoVentana - scope.altoActiva - (scope.margen * 3) - 88) + 'px';
-			};
-
-			scope.dimensionesVentana();
-
-			return angular.element($window).bind('resize', function() {
-				scope.dimensionesVentana();
-				return scope.$apply();
-			});
-		};
-	});
