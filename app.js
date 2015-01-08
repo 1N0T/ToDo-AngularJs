@@ -83,7 +83,17 @@ angular.module('app', ["html5.sortable", "ngSanitize", "ui.tinymce"])
 		};
 
 		$scope.modificarTarea = function ( tarea ) {
-			$scope.tareasPendientes[$scope.indiceActual].tarea = $scope.tarea;
+			switch ($scope.tipoActual) {
+				case "pendientes":
+					$scope.tareasPendientes[$scope.indiceActual].tarea = $scope.tarea;
+					break;
+				case "activas":
+					$scope.tareasActivas[$scope.indiceActual].tarea = $scope.tarea;
+					break;
+				case "finalizadas":
+					$scope.tareasFinalizadas[$scope.indiceActual].tarea = $scope.tarea;
+					break;
+			};
 			$scope.indiceActual = 0;
 			$scope.tarea = "";
 			$scope.modo  = "añadir";

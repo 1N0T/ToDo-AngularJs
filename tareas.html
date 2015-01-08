@@ -54,6 +54,7 @@
 				<div class="item" html-sortable="sortable_cross_option" ng-extra-sortable="'activas'" ng-model="tareasActivas">
 					<div  class="ui blue message" ng-class="{'completo': mostrarCompleto}" ng-repeat="item in tareasActivas track by $index"  ng-click="mostrarCompleto = !mostrarCompleto" >
 						<div class="botonera">
+							<i class="pencil icon" ng-click="seleccionarTarea('editar', 'activas', $index)"></i>
 							<i class="close icon" ng-click="seleccionarTarea('borrar', 'activas', $index)"></i>
 						</div>
 						<label ng-bind-html="item.tarea"></label>
