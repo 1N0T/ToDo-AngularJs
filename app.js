@@ -86,12 +86,15 @@ angular.module('app', ["html5.sortable", "ngSanitize", "ui.tinymce"])
 			switch ($scope.tipoActual) {
 				case "pendientes":
 					$scope.tareasPendientes[$scope.indiceActual].tarea = $scope.tarea;
+					almacenamientoLocal.put("pendientes", $scope.tareasPendientes);
 					break;
 				case "activas":
 					$scope.tareasActivas[$scope.indiceActual].tarea = $scope.tarea;
+					almacenamientoLocal.put("activas", $scope.tareasActivas);
 					break;
 				case "finalizadas":
 					$scope.tareasFinalizadas[$scope.indiceActual].tarea = $scope.tarea;
+					almacenamientoLocal.put("finalizadas", $scope.tareasFinalizadas);
 					break;
 			};
 			$scope.indiceActual = 0;
