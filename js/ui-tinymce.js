@@ -61,7 +61,9 @@ angular.module('ui.tinymce', [])
               }
             });
             ed.on('blur', function(e) {
-                elm.blur();
+            	  // elm.blur() no está soportado por jqLite sustituido por elm.triggerHandler('blur');	
+                // elm.blur();  
+                elm.triggerHandler('blur');
             });
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function (e) {
